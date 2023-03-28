@@ -7,8 +7,9 @@ function execute(command, callback) {
 };
 
 // call the function
-execute('ping -c 4 0.0.0.0', (output) => {
+execute('sleep -s -t', (output) => {
     console.log(output);
+
+    console.log('Reiniciando em 5, 4, 3, 2, 1')
 });
 
-module.exports = execute;
