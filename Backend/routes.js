@@ -13,10 +13,7 @@ router.get("/shutdown/:seconds", (req, res) => {
 
          const seconds = req.params.seconds;
 
-         console.log(seconds)
     async function shutdown (seconds) {
-        
-        console.log(seconds)
 
         // Function that turns off the computer in 3s by default
         await execute(`shutdown -s -t ${seconds}`, (output) => {

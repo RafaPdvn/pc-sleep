@@ -1,12 +1,14 @@
 const { app, BrowserWindow } = require('electron');
 const exec = require('child_process').exec;
 const expressApp = require('./backend/api')
+const path = require('path')
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 1920,
-    height: 1080,
-    autoHideMenuBar: true
+    width: 1500,
+    height: 900,
+    autoHideMenuBar: true,
+    icon: __dirname + '/images/favicon.png'
   })
 
   win.loadFile('index.html')
