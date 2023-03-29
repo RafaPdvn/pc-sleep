@@ -7,36 +7,46 @@
 
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='/Backend/script.js' ></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="./images/favicon.ico" />
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div class="container">  
         <div class="main"> <br>
             <div class="title">
-                <h1>Funcionou caraleoooooo</h1>
+                <h1> PC Sleep </h1>
             </div>
 
-            <button onclick="test()"> Clique aqui </button>
+            <button onclick="shutdown()"> Clique aqui para desligar (em 5 segundos por padrão) </button>
         </div>
     </div>
 
 </body>
 
+
+
 <script>
-        function test(){
-            axios.get('/execute')
+
+    // Function to shutdown the computer in 5 seconds by default
+
+        async function shutdown(){
+
+            await axios({
+                method: 'get',
+                url: `http://localhost:8080/shutdown/5`,
+                })
                 .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                    console.log(response)
+                }).catch(err => {
+                    console.log(err);
+                });
         };
+
+
 </script>
 
 </html>
