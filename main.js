@@ -12,22 +12,22 @@ const createWindow = () => {
   win.loadFile('index.html')
 }
 
-// call the function
 
-// app.whenReady().then(() => {
-//   createWindow()
 
-//   function execute(command, callback) {
-//       exec(command, (error, stdout, stderr) => { 
-//           callback(stdout); 
-//       });
-//   };
+app.whenReady().then(() => {
+  createWindow()
 
-//   // call the function
-//   execute('ping google.com', (output) => {
-//     console.log(output);
+  // function execute(command, callback) {
+  //     exec(command, (error, stdout, stderr) => { 
+  //         callback(stdout); 
+  //     });
+  // };
 
-//     console.log('Reiniciando em 5, 4, 3, 2, 1')
-//   });
+  // call the function
+  execute('ping google.com', (output) => {
+    console.log(output);
 
-// })
+    console.log('Reiniciando em 5, 4, 3, 2, 1')
+  });
+
+})
