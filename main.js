@@ -1,11 +1,11 @@
 const { app, BrowserWindow } = require('electron');
 const exec = require('child_process').exec;
-
+const expressApp = require('./backend/api')
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
     autoHideMenuBar: true
   })
 
@@ -24,10 +24,10 @@ app.whenReady().then(() => {
   // };
 
   // call the function
-  execute('ping google.com', (output) => {
-    console.log(output);
+  // execute('ping google.com', (output) => {
+  //   console.log(output);
 
-    console.log('Reiniciando em 5, 4, 3, 2, 1')
-  });
+  //   console.log('Reiniciando em 5, 4, 3, 2, 1')
+  // });
 
 })
