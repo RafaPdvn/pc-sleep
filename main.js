@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const exec = require('child_process').exec;
 const expressApp = require('./backend/api')
-const path = require('path')
 
 const createWindow = () => {
   const win = new BrowserWindow({

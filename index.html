@@ -19,9 +19,21 @@
         <div class="main"> <br>
             <div class="title">
                 <h1> PC Sleep </h1>
+            </div>  <br/>
+
+            
+
+            <input id = "secondsToShutdown" placeholder="Digite em quantos segundos quer desligar" type="number" min="0" step="1" style="width: 300px; text-align: center;"></input>  <br/>
+            <br/>
+
+            <button id = "shutdownButton"> Agendar desligamento </button> <br/> 
+
+            <button id = "cancelShutdownButton"> Cancelar desligamento </button>
+
+            <div> <br/> 
+                <p id = "shutdownInformation"></p>
             </div>
 
-            <button onclick="shutdown()"> Clique aqui para desligar (em 5 segundos por padrão) </button>
         </div>
     </div>
 
@@ -30,23 +42,58 @@
 
 
 <script>
-
-    // Function to shutdown the computer in 5 seconds by default
+  
 
         async function shutdown(){
 
-            await axios({
+            const secondsToShutdown = document.getElementById('secondsToShutdown').value;
+
+            if(secondsToShutdown == undefined || secondsToShutdown.length == 0 || secondsToShutdown == undefined){
+                alert('Informe os segundos para agendar o desligamento')
+            } else {
+
+               await axios({
+                        method: 'get',
+                        url: `http://localhost:8080/shutdown/${secondsToShutdown}`,
+                        })
+                        .then(function (response) {
+
+                            const shutdownInformation = document.getElementById('shutdownInformation');
+                            shutdownInformation.innerHTML = `O computador será desligado em ${secondsToShutdown} segundo(s)`;
+
+                        }).catch(err => {
+                            console.log(err);
+                        });
+            }
+        };
+
+       
+
+         function shutdownCancel(){
+
+             axios({
                 method: 'get',
-                url: `http://localhost:8080/shutdown/5`,
+                url: `http://localhost:8080/cancel`,
                 })
                 .then(function (response) {
-                    console.log(response)
+   
+                    const shutdownInformation = document.getElementById('shutdownInformation');
+                    shutdownInformation.innerHTML = '';
+
                 }).catch(err => {
                     console.log(err);
                 });
-        };
+            };
 
 
+            const shutdownButton = document.getElementById('shutdownButton').addEventListener('click', shutdown);
+            const cancelShutdownButton = document.getElementById('cancelShutdownButton').addEventListener('click', shutdownCancel);
+           
+
+       
+
+
+         
 </script>
 
 </html>

@@ -19,12 +19,32 @@ router.get("/shutdown/:seconds", (req, res) => {
         await execute(`shutdown -s -t ${seconds}`, (output) => {
     
             console.log(`O computador será desligado em ${seconds} segundos`)
+
+            res.json({computer_shutdown: true})
         });
     
     }
 
     shutdown(seconds)
 })
+
+
+router.get("/cancel", (req, res) => {
+
+     function shutdownCancel () {
+
+        // Function that turns off the computer in 3s by default
+         execute(`shutdown -a`, (output) => {
+    
+            console.log('Desligamento cancelado')
+
+            res.json({shutdown_canceled: true})
+        });
+    
+    }
+
+    shutdownCancel();
+});
 
 
 module.exports = router;
