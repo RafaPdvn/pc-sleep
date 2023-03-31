@@ -13,6 +13,8 @@
     <link rel="shortcut icon" href="./images/favicon.ico" />
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="./Backend/dist/easytimer.min.js"></script>
 </head>
 <body>
     <div class="container">  
@@ -48,16 +50,14 @@
 
 
 <script>
-  
 
         async function shutdown(){
 
-            const hour = document.getElementById('hoursForm').value;
-            const min = document.getElementById('minutesForm').value;
-            const sec = document.getElementById('secondsForm').value;
+            let hour = document.getElementById('hoursForm').value;
+            let min = document.getElementById('minutesForm').value;
+            let sec = document.getElementById('secondsForm').value;
 
             const timeToShutdown = hour * 3600 + min * 60 + sec * 1;
-            console.log(timeToShutdown);
 
             if(hour == undefined || hour.length == 0 || min == undefined || min.length == 0 || sec == undefined || sec.length == 0){
                 alert('Informe o tempo para desligar')
@@ -68,9 +68,21 @@
                         url: `http://localhost:8080/shutdown/${timeToShutdown}`,
                         })
                         .then(function (response) {
-
+                            
                             const shutdownInformation = document.getElementById('shutdownInformation');
-                            shutdownInformation.innerHTML = `Será desligado em ${hour} hora(s), ${min} minuto(s) e ${sec} segundo(s)`;
+
+
+                            
+                                // for(var i = hour; i >= 0; i--){
+                                //     for(var j = min; j >= 0; j--){
+                                //         for(var k = sec; k >= 0; k--){    
+                                //             shutdownInformation.innerHTML = `Será desligado em ${hour} hora(s), ${min} minuto(s) e ${sec} segundo(s)`;
+                                //         }
+                                //         sec = 59;
+                                //     }
+                                //     min = 59;
+                                // }
+    
 
                         }).catch(err => {
                             console.log(err);

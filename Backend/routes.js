@@ -24,7 +24,7 @@ router.get("/shutdown/:seconds", (req, res) => {
         });
 
     }
-    
+
     console.log(`Desligando em ${seconds}`)
 
     shutdown(seconds)
