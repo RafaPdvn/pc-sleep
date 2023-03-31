@@ -19,11 +19,17 @@
         <div class="main"> <br>
             <div class="title">
                 <h1> PC Sleep </h1>
-            </div>  <br/>
+            </div>  
 
-            
+            <h3>Insira o tempo para o computador desligar abaixo</h3> <br/>
 
-            <input id = "secondsToShutdown" placeholder="Digite em quantos segundos quer desligar" type="number" min="0" step="1" style="width: 300px; text-align: center;"></input>  <br/>
+            <div class="timeFormContainer">
+                <input id = "hoursForm" class = "timeForm" value="01" placeholder="" type="number" min="0" max="99"></input>  <br/>
+                <input id = "minutesForm" class = "timeForm" value="30" placeholder="" type="number" min="0" max="59"></input>  <br/>
+                <input id = "secondsForm" class = "timeForm" value="00" placeholder="" type="number" min="0" max="59"></input>  <br/>
+                <br/>
+            </div>
+
             <br/>
 
             <button id = "shutdownButton"> Agendar desligamento </button> <br/> 
@@ -46,20 +52,25 @@
 
         async function shutdown(){
 
-            const secondsToShutdown = document.getElementById('secondsToShutdown').value;
+            const hour = document.getElementById('hoursForm').value;
+            const min = document.getElementById('minutesForm').value;
+            const sec = document.getElementById('secondsForm').value;
 
-            if(secondsToShutdown == undefined || secondsToShutdown.length == 0 || secondsToShutdown == undefined){
-                alert('Informe os segundos para agendar o desligamento')
+            const timeToShutdown = hour * 3600 + min * 60 + sec * 1;
+            console.log(timeToShutdown);
+
+            if(hour == undefined || hour.length == 0 || min == undefined || min.length == 0 || sec == undefined || sec.length == 0){
+                alert('Informe o tempo para desligar')
             } else {
 
                await axios({
                         method: 'get',
-                        url: `http://localhost:8080/shutdown/${secondsToShutdown}`,
+                        url: `http://localhost:8080/shutdown/${timeToShutdown}`,
                         })
                         .then(function (response) {
 
                             const shutdownInformation = document.getElementById('shutdownInformation');
-                            shutdownInformation.innerHTML = `O computador será desligado em ${secondsToShutdown} segundo(s)`;
+                            shutdownInformation.innerHTML = `Será desligado em ${hour} hora(s), ${min} minuto(s) e ${sec} segundo(s)`;
 
                         }).catch(err => {
                             console.log(err);

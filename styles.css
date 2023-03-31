@@ -23,3 +23,24 @@ body{
     border-radius: 6%;
     opacity: 88%;
 }
+
+h3{
+    font-size: medium;
+    color: #5c5c5c;
+}
+
+.timeFormContainer{
+    display: flex;
+}
+
+.timeForm{
+    width: 50px; 
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 15%;
+}
+
+#minutesForm{
+    margin-left: 5px;
+    margin-right: 5px;
+}
