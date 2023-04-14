@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="./Backend/dist/easytimer.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">  
@@ -26,7 +28,7 @@
             <h3>Insira o tempo para o computador desligar abaixo</h3> <br/>
 
             <div class="timeFormContainer">
-                <input id = "hoursForm" class = "timeForm" value="01" placeholder="" type="number" min="0" max="99"></input>  <br/>
+                <input id = "hoursForm" class = "timeForm" value="00" placeholder="" type="number" min="0" max="99"></input>  <br/>
                 <input id = "minutesForm" class = "timeForm" value="30" placeholder="" type="number" min="0" max="59"></input>  <br/>
                 <input id = "secondsForm" class = "timeForm" value="00" placeholder="" type="number" min="0" max="59"></input>  <br/>
                 <br/>
@@ -34,9 +36,9 @@
 
             <br/>
 
-            <button id = "shutdownButton"> Agendar desligamento </button> <br/> 
+            <button id = "shutdownButton" class="btn btn-primary"> Agendar desligamento </button> <br/> 
 
-            <button id = "cancelShutdownButton"> Cancelar desligamento </button>
+            <button id = "cancelShutdownButton" class="btn btn-danger"> Cancelar desligamento </button>
 
             <div> <br/> 
                 <p id = "shutdownInformation"></p>
@@ -53,9 +55,9 @@
 
         async function shutdown(){
 
-            let hour = document.getElementById('hoursForm').value;
-            let min = document.getElementById('minutesForm').value;
-            let sec = document.getElementById('secondsForm').value;
+            var hour = document.getElementById('hoursForm').value;
+            var min = document.getElementById('minutesForm').value;
+            var sec = document.getElementById('secondsForm').value;
 
             const timeToShutdown = hour * 3600 + min * 60 + sec * 1;
 
@@ -82,7 +84,41 @@
                                 //     }
                                 //     min = 59;
                                 // }
+
+                                var updatedSec = sec;
+                                var updatedMin = min;
+                                var updatedHour = hour;
+
+                                var interval = setInterval( decrement, 1000);
+
+                                function decrement(){
+
+                                    if(updatedSec > 0) {
+                                        updatedSec = updatedSec - 1;
+                                     
+                                        shutdownInformation.innerHTML = `Será desligado em ${hour}h ${updatedMin}min ${updatedSec}s`;
+                                    } else {
+                                      if(updatedMin > 0 ){
+                                        updatedSec = 59;
+                                        updatedMin = updatedMin - 1;
+
+                                        if(updatedMin < 1) {
+                                            updatedHour = updatedHour - 1;
+                                        }
+
+                                        shutdownInformation.innerHTML = `Será desligado em ${hour}h ${updatedMin}min ${updatedSec}s`;
+                                      } else {
+                                        if(updatedHour < 1){
+                                            shutdownInformation.innerHTML = `Será desligado em ${hour}h ${updatedMin}min ${updatedSec}s`;
+                                        }
+                                      }
+                                    }
+
+
+                                }
+                                  
     
+                               // shutdownInformation.innerHTML = `Será desligado em ${hour} hora(s), ${min} minuto(s) e ${sec} segundo(s)`;
 
                         }).catch(err => {
                             console.log(err);
@@ -94,6 +130,7 @@
 
          function shutdownCancel(){
 
+            location.reload();
              axios({
                 method: 'get',
                 url: `http://localhost:8080/cancel`,

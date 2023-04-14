@@ -7,13 +7,11 @@
     "start": "electron .",
     "dist": "electron-builder"
   },
-
   "build": {
     "win": {
       "icon": "images/favicon.png"
     }
   },
-
   "keywords": [],
   "author": "",
   "license": "ISC",
