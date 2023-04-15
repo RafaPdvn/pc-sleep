@@ -28,7 +28,27 @@ router.get("/shutdown/:seconds", (req, res) => {
     console.log(`Desligando em ${seconds}`)
 
     shutdown(seconds)
-})
+});
+
+router.get("/restart/:seconds", (req, res) => {
+
+    const seconds = req.params.seconds;
+    
+    function restart (seconds) {
+
+        console.log(seconds)
+       // Function that turns off the computer in 3s by default
+        execute(`shutdown -r -t ${seconds}`, (output) => {
+
+            console.log(`O computador será reiniciado em ${seconds} segundos`)
+
+           res.json({computer_restart: true})
+       });
+
+   }
+
+   restart(seconds);
+});
 
 
 router.get("/cancel", (req, res) => {
