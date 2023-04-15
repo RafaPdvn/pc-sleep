@@ -34,6 +34,7 @@ h3{
 .timeFormContainer{
     display: flex;
     width: 250px;
+    text-align: center;
 }
 
 .timeForm{
@@ -52,4 +53,8 @@ h3{
     text-align: center;
     font-size: 18px;
     font-weight: 300;
+}
+
+#cancelShutdownButton {
+    width: 150px;
 }

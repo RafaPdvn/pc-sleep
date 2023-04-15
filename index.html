@@ -31,11 +31,11 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
             <div class="timeFormContainer">
 
                 <div class="form-outline timeFormContainer" style="width: 22rem;">
-                    <input id = "hoursForm" min="0" max="20" type="number" id="typeNumber" class="form-control" value="00" />
+                    <input id = "hoursForm" min="0" max="" type="number" id="typeNumber" class="form-control" value="00" />
 
-                    <input id = "minutesForm" min="0" max="20" type="number" id="typeNumber" class="form-control"  value="30" />
+                    <input id = "minutesForm" min="0" max="59" type="number" id="typeNumber" class="form-control"  value="30" />
                     
-                    <input id = "secondsForm" min="0" max="20" type="number" id="typeNumber" class="form-control"  value="00"/>
+                    <input id = "secondsForm" min="0" max="59" type="number" id="typeNumber" class="form-control"  value="00"/>
      
                 </div>
 
@@ -45,11 +45,17 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
                 <br/>
             </div>
 
-            <br/>
+            <br/>  <br/>
 
-            <button id = "shutdownButton" class="btn btn-primary"> Agendar desligamento </button> <br/> 
+            <div class="buttonsSections">
+                <button id = "shutdownButton" class="btn btn-primary"> Agendar desligamento </button> 
+                
+                <button id = "restartButton" class="btn btn-warning"> Agendar reinicialização </button> <br/>  <br/> 
+            </div> 
 
-            <button id = "cancelShutdownButton" class="btn btn-danger"> Cancelar desligamento </button>
+            <button id = "cancelShutdownButton" disabled class="btn btn-danger"> Cancelar </button>  
+
+           
 
             <div> <br/> 
                 <p id = "shutdownInformation"></p>
@@ -64,11 +70,14 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
 
 <script>
 
+       let actionInProgress = false;
+
         async function shutdown(){
 
             var hour = document.getElementById('hoursForm').value;
             var min = document.getElementById('minutesForm').value;
             var sec = document.getElementById('secondsForm').value;
+            actionInProgress = true;
 
             const timeToShutdown = hour * 3600 + min * 60 + sec * 1;
 
@@ -76,6 +85,8 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
                 alert('Informe o tempo para desligar')
             } else {
 
+                
+                console.log(actionInProgress)
                await axios({
                         method: 'get',
                         url: `http://localhost:8080/shutdown/${timeToShutdown}`,
@@ -83,7 +94,7 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
                         .then(function (response) {
                             
                             const shutdownInformation = document.getElementById('shutdownInformation');
-
+                            document.getElementById("cancelShutdownButton").disabled = false;
 
                             
                                 // for(var i = hour; i >= 0; i--){
@@ -137,6 +148,83 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
             }
         };
 
+
+        async function restart(){
+
+var hour = document.getElementById('hoursForm').value;
+var min = document.getElementById('minutesForm').value;
+var sec = document.getElementById('secondsForm').value;
+actionInProgress = true;
+
+const timeToShutdown = hour * 3600 + min * 60 + sec * 1;
+
+if(hour == undefined || hour.length == 0 || min == undefined || min.length == 0 || sec == undefined || sec.length == 0){
+    alert('Informe o tempo para desligar')
+} else {
+    
+    console.log(actionInProgress);
+
+   await axios({
+            method: 'get',
+            url: `http://localhost:8080/restart/${timeToShutdown}`,
+            })
+            .then(function (response) {
+                
+                const shutdownInformation = document.getElementById('shutdownInformation');
+                document.getElementById("cancelShutdownButton").disabled = false;
+
+                
+                    // for(var i = hour; i >= 0; i--){
+                    //     for(var j = min; j >= 0; j--){
+                    //         for(var k = sec; k >= 0; k--){    
+                    //             shutdownInformation.innerHTML = `Será desligado em ${hour} hora(s), ${min} minuto(s) e ${sec} segundo(s)`;
+                    //         }
+                    //         sec = 59;
+                    //     }
+                    //     min = 59;
+                    // }
+
+                    var updatedSec = sec;
+                    var updatedMin = min;
+                    var updatedHour = hour;
+
+                    var interval = setInterval( decrement, 1000);
+
+                    function decrement(){
+
+                        if(updatedSec > 0) {
+                            updatedSec = updatedSec - 1;
+                         
+                            shutdownInformation.innerHTML = `Será reiniciado em ${hour}h ${updatedMin}min ${updatedSec}s`;
+                        } else {
+                          if(updatedMin > 0 ){
+                            updatedSec = 59;
+                            updatedMin = updatedMin - 1;
+
+                            if(updatedMin < 1) {
+                                updatedHour = updatedHour - 1;
+                            }
+
+                            shutdownInformation.innerHTML = `Será desligado em ${hour}h ${updatedMin}min ${updatedSec}s`;
+                          } else {
+                            if(updatedHour < 1){
+                                shutdownInformation.innerHTML = `Será desligado em ${hour}h ${updatedMin}min ${updatedSec}s`;
+                            }
+                          }
+                        }
+
+
+                    }
+                      
+
+                   // shutdownInformation.innerHTML = `Será desligado em ${hour} hora(s), ${min} minuto(s) e ${sec} segundo(s)`;
+
+            }).catch(err => {
+                console.log(err);
+            });
+}
+};
+
        
 
          function shutdownCancel(){
@@ -158,6 +246,7 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
 
 
             const shutdownButton = document.getElementById('shutdownButton').addEventListener('click', shutdown);
+            const restartButton = document.getElementById('restartButton').addEventListener('click', restart);
             const cancelShutdownButton = document.getElementById('cancelShutdownButton').addEventListener('click', shutdownCancel);
            
 
