@@ -1,6 +1,7 @@
 body {
     margin: 0px;
-    background-color: black
+    background-color: black;
+    background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(0,46,163,1) 100%);
 }
 
 .container{
@@ -26,6 +27,8 @@ body {
     opacity: 88%;
 }
 
+/*Modal elements*/
+
 h3{
     font-size: medium;
     color: #5c5c5c;
@@ -37,6 +40,25 @@ h3{
     text-align: center;
 }
 
+.wrapper {
+    position: relative;
+    width: 100%;
+}
+  
+.placeholder {
+    position: absolute;
+    right: 4px;
+    top: 7px;
+    color: #5c5c5c;
+    pointer-events: none;
+    opacity: .5;
+}
+  
+.form-control:placeholder-shown + .placeholder {
+    /* if real placeholder is shown - hide fake placeholder */
+    opacity: 0;
+}
+
 .timeForm{
     width: 50px; 
     text-align: center;
@@ -44,15 +66,18 @@ h3{
     border-radius: 15%;
 }
 
-#minutesForm{
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
 #subtitle {
     text-align: center;
     font-size: 18px;
     font-weight: 300;
+}
+
+#shutdownButton {
+    width: 160px;
+}
+
+#restartButton {
+    width: 160px;
 }
 
 #cancelShutdownButton {
