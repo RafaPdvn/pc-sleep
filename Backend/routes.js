@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const exec = require('child_process').exec;
+const fs = require('fs');
+const moment = require('moment');
 
 function execute(command, callback) {
     exec(command, (error, stdout, stderr) => {
@@ -21,6 +23,19 @@ router.get("/shutdown/:seconds", (req, res) => {
             console.log(`O computador será desligado em ${seconds} segundos`)
 
             res.json({computer_shutdown: true})
+
+
+            const shutdownDetails = `${seconds} ${moment().locale('pt-br').format('L')}` 
+
+                        // fileName is a string that contains the path and filename created in the save file dialog.  
+                fs.writeFile('shutdownPref.txt', shutdownDetails, (err) => {
+                    if(err){
+                        console.log("An error ocurred creating the file "+ err.message)
+                    }
+                                
+                    console.log("The file has been succesfully saved");
+                });
+
         });
 
     }

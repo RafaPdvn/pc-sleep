@@ -32,7 +32,7 @@ background: linear-gradient(0deg, rgba(3,0,55,1) 0%, rgba(42,0,126,1) 50%, rgba(
 
             <div class="timeFormContainer">
 
-                <div class="form-outline timeFormContainer" style="width: 22rem;">
+                <div class="form-outline timeFormContainer" style="width: 22rem;" onmouseleave="autoFiller()">
                     <input id = "hoursForm" min="0" max="" type="number" onPaste="return false" id="typeNumber" placeholder="hora" class="form-control" />
 
                     <input id = "minutesForm" min="0" max="59" type="number"  onPaste="return false" id="typeNumber" placeholder="min" class="form-control"  />
@@ -204,7 +204,7 @@ const timeToShutdown = hour * 3600 + min * 60 + sec * 1;
 
 if(hour == undefined || hour.length == 0 || min == undefined || min.length == 0 || sec == undefined || sec.length == 0){
     Toastify({
-                    text: "Atenção: Informe o tempo para desligar",
+                    text: "Atenção: Informe o tempo para reiniciar",
                     className: "info",
                     style: {
                         background: "yellow",
@@ -298,9 +298,31 @@ if(hour == undefined || hour.length == 0 || min == undefined || min.length == 0 
                 }
 
                 if(time == 1){
-                    document.getElementById('hoursForm').value = "01";
-                    document.getElementById('minutesForm').value = "00";
+                    document.getElementById('hoursForm').value = "00";
+                    document.getElementById('minutesForm').value = "60";
                     document.getElementById('secondsForm').value = "00";
+                }
+            }
+
+            function autoFiller(){
+                var hour = document.getElementById('hoursForm').value;
+                var min = document.getElementById('minutesForm').value;
+                var sec = document.getElementById('secondsForm').value;
+
+                if(min.length > 0 && hour.length == 0 && sec.length == 0 ){
+                    document.getElementById('secondsForm').value = "00";
+                    document.getElementById('hoursForm').value = "00";
+                    console.log(sec)
+                }
+
+                if(hour.length > 0 && min.length == 0 && sec.length == 0 ){
+                    document.getElementById('secondsForm').value = "00";
+                    document.getElementById('minutesForm').value = "00";
+                }
+
+                if(sec.length > 0 && hour.length == 0 && min.length == 0 ){
+                    document.getElementById('minutesForm').value = "00";
+                    document.getElementById('hoursForm').value = "00";
                 }
             }
 
