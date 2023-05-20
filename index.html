@@ -64,13 +64,13 @@
             <button id = "restartButton" class="btn btn-warning"> Reiniciar </button> <br/>  <br/> 
         </div> 
 
-        <button id = "cancelShutdownButton" disabled class="btn btn-danger"> Cancelar </button>  
+        <button id = "cancelShutdownButton" hidden = "true" disabled class="btn btn-danger"> Cancelar </button>  
         
         <div> <br/> 
             <p id = "shutdownInformation"></p>
         </div>
 
-        <svg data-bs-toggle="modal" data-bs-target="#presetModal" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+        <svg data-toggle="tooltip" title="Tempo predefinido" data-bs-toggle="modal" data-bs-target="#presetModal" xmlns="http://www.w3.org/2000/svg" style="cursor: pointer;" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
             <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
             </svg>
 
@@ -124,6 +124,10 @@ Tempo predefino
 
 <script>
 
+$(document).ready(function() {
+    $('[data-toggle=tooltip]').tooltip('eee');
+}); 
+
 let actionInProgress = false;
 
 /*Função para desligar o pc*/
@@ -157,6 +161,8 @@ async function shutdown(){
                     
                     const shutdownInformation = document.getElementById('shutdownInformation');
                     document.getElementById("cancelShutdownButton").disabled = false;
+                    document.getElementById("cancelShutdownButton").hidden = false;
+                    
 
                         var updatedSec = sec;
                         var updatedMin = min;
@@ -226,6 +232,7 @@ async function restart(){
                 
             const shutdownInformation = document.getElementById('shutdownInformation');
             document.getElementById("cancelShutdownButton").disabled = false;
+            document.getElementById("cancelShutdownButton").hidden = false;
 
             var updatedSec = sec;
             var updatedMin = min;
