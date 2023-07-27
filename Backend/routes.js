@@ -1,6 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const exec = require('child_process').exec;
+var fs = require("fs");
+const moment = require('moment'); // require
+
+async function readFile(){
+    await fs.readFile('pref.json', 'utf8', function readFileCallback(err, data){
+        if (err){
+            console.log(err);
+        } else {
+         console.log(JSON.stringify(data))
+    }});
+}
 
 function execute(command, callback) {
     exec(command, (error, stdout, stderr) => {
@@ -9,7 +20,7 @@ function execute(command, callback) {
 };
 
 
-router.get("/shutdown/:seconds", (req, res) => {
+router.get("/shutdown/:seconds", async (req, res) => {
 
          const seconds = req.params.seconds;
 
@@ -24,6 +35,27 @@ router.get("/shutdown/:seconds", (req, res) => {
         });
 
     }
+
+    var preferences = {
+        seconds: [],
+        time: moment().locale('pt-br').format('L')
+    };
+
+    preferences.seconds.push(seconds)
+
+    await readFile().then(() => {
+
+        fs.writeFile("./pref.json", JSON.stringify(preferences, null, 4), (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            };
+            console.log("File has been created");
+        });
+
+    })
+
+ 
 
     console.log(`Desligando em ${seconds}`)
 
